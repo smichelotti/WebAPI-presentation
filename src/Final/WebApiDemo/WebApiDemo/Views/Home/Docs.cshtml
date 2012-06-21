@@ -1,0 +1,71 @@
+﻿@model System.Linq.ILookup<string, System.Web.Http.Description.ApiDescription>
+
+<header>
+    <div class="content-wrapper">
+        <div class="float-left">
+            <p class="site-title">Web API Documentation (API Explorer)</p>
+        </div>
+    </div>
+</header>
+<div id="body">
+    <section class="content-wrapper main-content clear-fix">
+        <h2>Docs</h2>
+        @foreach (var group in this.Model)
+        {
+            
+            <h2>@group.Key</h2>
+            <div class="accordion">
+                @foreach (var description in group)
+                {
+                    
+                    <h3><a href="#">@description.HttpMethod.Method @description.RelativePath</a></h3>
+                    <div>
+                        <p>@description.Documentation</p>
+                        <h4>Parameters</h4>
+                        @if (description.ParameterDescriptions.Count > 0)
+                        {
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Documentation</th>
+                                        <th>Parameter Source</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @*@Html.DisplayFor(m => description.ParameterDescriptions)*@
+                                    @foreach (var paramDescription in description.ParameterDescriptions)
+                                    {
+                                        <tr>
+                                            <td>@paramDescription.Name</td>
+                                            <td>@paramDescription.Documentation</td>
+                                            <td>@paramDescription.Source</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <p>None</p>
+                        }
+                    </div>    
+            
+                }
+            </div>
+        }
+    </section>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+    <script>
+        $(function () {
+            $(".accordion").accordion({
+                active: false,
+                collapsible: true,
+                autoHeight: false
+            });
+        });
+    </script>
+}

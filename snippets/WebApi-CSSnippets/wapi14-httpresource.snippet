@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>wapi14-httpresource</Title>
+      <Author>setup</Author>
+      <Description>
+      </Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>wapi14-httpresource</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp"><![CDATA[public abstract class HttpResource
+    {
+        public HttpResource()
+        {
+            this.Links = new List<Link>();
+        }
+
+        [NotMapped]
+        public string SelfLink { get; set; }
+
+        [NotMapped]
+        public List<Link> Links { get; set; }
+    }
+
+
+    public class HttpResourceList<T> : HttpResource
+    {
+        private List<T> resourceList;
+
+        public HttpResourceList()
+        {
+
+        }
+        public HttpResourceList(List<T> resourceList)
+        {
+            this.resourceList = (resourceList ?? new List<T>());
+        }
+
+        public List<T> Items
+        {
+            get
+            {
+                return this.resourceList;
+            }
+            set
+            {
+                this.resourceList = value;
+            }
+        }
+    }
+
+    public class Link
+    {
+        public string LinkName { get; set; }
+        public string Href { get; set; }
+    }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

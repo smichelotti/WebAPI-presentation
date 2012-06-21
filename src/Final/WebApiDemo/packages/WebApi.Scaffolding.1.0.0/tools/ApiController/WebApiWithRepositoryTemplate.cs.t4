@@ -1,0 +1,113 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web;
+using System.Web.Http;
+using <#= Model.Namespace #>.Models;
+
+namespace <#= Model.Namespace #>
+{
+	public class <#= Model.ApiControllerName #> : ApiController 
+	{
+		private readonly <#= RepositoryInterface #> <#= RepositoryName #>;
+
+<# if (!Model.UseIoC) { #>
+		// If you are using Dependency Injection, you can delete the following constructor
+		public <#= Model.ApiControllerName #> () : this(new <#= RepositoryInterface.Remove(0, 1) #>()) 
+		{
+		}
+<# } #>
+
+		public <#= Model.ApiControllerName #> (<#= RepositoryInterface #> <#= RepositoryName #>) 
+		{
+			this.<#= RepositoryName #> = <#= RepositoryName #>;
+		}
+
+		public IEnumerable<<#= Model.ModelType #>> GetAll()
+		{
+			return this.<#= RepositoryName #>.All.ToList();
+		}
+
+		public <#= Model.ModelType #> Get(int id)
+		{
+			var item = this.<#= RepositoryName #>.Find(id);
+			if (item == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
+
+            return item;
+		}
+
+		public HttpResponseMessage Post(<#= Model.ModelType #> item)
+		{
+			if (ModelState.IsValid)
+            {
+                this.<#= RepositoryName #>.InsertOrUpdate(item);
+                this.<#= RepositoryName #>.Save();
+
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, item);
+                response.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = item.Id }));
+                return response;
+            }
+            else
+            {
+                var validationResults = this.ModelState.SelectMany(m => m.Value.Errors.Select(x => x.ErrorMessage + "(Property: " + m.Key + ")" ));
+                throw new HttpResponseException(this.Request.CreateResponse(HttpStatusCode.BadRequest, validationResults));
+            }
+		}
+
+		public HttpResponseMessage Put(int id, <#= Model.ModelType #> item)
+		{
+			if (ModelState.IsValid && id == item.Id)
+            {
+                this.<#= RepositoryName #>.InsertOrUpdate(item);
+                this.<#= RepositoryName #>.Save();             
+
+                return Request.CreateResponse(HttpStatusCode.OK, item);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+		}
+
+		public HttpResponseMessage Delete(int id)
+		{
+			var item = this.<#= RepositoryName #>.Find(id);
+            if (item == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+
+            this.<#= RepositoryName #>.Delete(id);
+            this.<#= RepositoryName #>.Save();
+
+            return Request.CreateResponse(HttpStatusCode.NoContent, item);
+		}
+	}
+}
+
+<#+
+	string RepositoryInterface {
+		get {
+			return "I" + Model.ModelType + "Repository";
+		}
+	}
+
+	string RepositoryName {
+		get {
+			return Model.ModelType.ToLower() + "Repository";
+		}
+	}
+#>

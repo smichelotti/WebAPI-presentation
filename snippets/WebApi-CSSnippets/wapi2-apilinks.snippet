@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>wapi2-apilinks</Title>
+      <Author>setup</Author>
+      <Description>
+      </Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>wapi2-apilinks</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp"><![CDATA[public static Uri ApiLink(this UrlHelper urlHelper, int id, string controller, string routeName = "DefaultApi")
+        {
+            return new Uri(urlHelper.Link(routeName, new { id = id, controller = controller }));
+        }
+
+        public static Uri ApiLink(this UrlHelper urlHelper, string controller)
+        {
+            return new Uri(urlHelper.Link("DefaultApi", new { controller = controller }));
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>wapi9-handleapierror</Title>
+      <Author>setup</Author>
+      <Description>
+      </Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>wapi9-handleapierror</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp"><![CDATA[throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError)
+            {
+                Content = new StringContent("An error occurred, please try again or contact the administrator."),
+                ReasonPhrase = "Unexpected Exception"
+            });]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

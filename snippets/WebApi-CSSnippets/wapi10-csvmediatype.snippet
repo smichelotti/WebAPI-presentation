@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>wapi10-csvmediatype</Title>
+      <Author>setup</Author>
+      <Description>
+      </Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>wapi10-csvmediatype</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp"><![CDATA[public override void WriteToStream(Type type, object value, Stream stream, HttpContentHeaders contentHeaders)
+        {
+            using (var writer = new StreamWriter(stream))
+            {
+                var list = value as IEnumerable;
+                if (list != null)
+                {
+                    foreach (var item in list)
+                    {
+                        WriteItem(item, writer);
+                    }
+                }
+                else
+                {
+                    WriteItem(value, writer);
+                }
+            }
+            stream.Close();
+        }
+
+        private void WriteItem(object item, StreamWriter writer)
+        {
+            var properties = item.GetType().GetProperties();
+            var line = string.Join(",", properties.Select(p => Convert.ToString(p.GetValue(item))).ToArray());
+            writer.WriteLine(line);
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

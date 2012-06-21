@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>wapi8-depResConfig</Title>
+      <Author>setup</Author>
+      <Description>
+      </Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>wapi8-depResConfig</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp"><![CDATA[// Dependency Resolution
+            if (dependencyResolver == null)
+            {
+                var kernel = new StandardKernel();
+                kernel.Bind<ITagRepository>().To<TagRepository>();
+                kernel.Bind<IDrillRepository>().To<DrillRepository>();
+                config.DependencyResolver = new NinjectDependencyResolver(kernel);
+            }
+            else
+            {
+                config.DependencyResolver = dependencyResolver;
+            }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

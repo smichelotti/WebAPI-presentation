@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>wapi13-postunittest</Title>
+      <Author>setup</Author>
+      <Description>
+      </Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>wapi13-postunittest</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp"><![CDATA[[TestMethod]
+        public void Post_valid_tag_should_return_with_location_header()
+        {
+            // arrange
+            var tagsRepository = new Mock<ITagRepository>();
+            var tag = TestUtil.CreateValidTag();
+            tagsRepository.Setup(r => r.InsertOrUpdate(tag)).Callback(() => tag.Id = 1);
+            var kernel = new StandardKernel();
+            kernel.Bind<ITagRepository>().ToMethod(context => tagsRepository.Object);
+
+            var config = new HttpConfiguration();
+            WebApiConfig.Configure(config, new NinjectDependencyResolver(kernel));
+            var server = new HttpServer(config);
+            var client = new HttpClient(server);
+
+            // act
+            var response = client.PostAsJsonAsync<Tag>("http://localhost/api/tags", tag).Result;
+            Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+
+            // assert
+            response.Should().NotBeNull();
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            var postedTag = response.Content.ReadAsAsync<Tag>().Result;
+            postedTag.Id.Should().NotBe(0);
+            postedTag.Name.Should().NotBeNull();
+            Console.WriteLine(response.Headers.Location.AbsoluteUri);
+            response.Headers.Location.AbsoluteUri.Should().NotBeNull();
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

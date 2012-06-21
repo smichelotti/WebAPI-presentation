@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>wapi6-tagdrillscontroller</Title>
+      <Author>setup</Author>
+      <Description>
+      </Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>wapi6-tagdrillscontroller</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp"><![CDATA[private IDrillRepository drillRepository;
+
+        public TagDrillsController(IDrillRepository drillRepository)
+        {
+            this.drillRepository = drillRepository;
+        }
+
+        public List<Drill> GetByTag(int id)
+        {
+            var list = this.drillRepository.All.Where(d => d.TagId == id).ToList();
+            return list;
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

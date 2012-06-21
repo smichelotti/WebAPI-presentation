@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Basketball Playbook</title>
+    @*@Styles.Render("~/Content/themes/base/css", "~/Content/css")*@
+    @Styles.Render("~/Content/playbookstyles")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+      <header>
+        <div class="shell">
+		    <div id="top">
+			    <h1><a href="#">Basketball Playbook</a></h1>
+			    <div id="top-navigation">
+				    Welcome <a href="#"><strong>Administrator</strong></a>
+				    <span>|</span>
+				    <a href="#">Log out</a>
+			    </div>
+		    </div>
+		
+            <nav>
+			    <ul>
+			        <li><a href="#" class="active"><span>Drills</span></a></li>
+			        <li><a href="#"><span>Practices</span></a></li>
+			    </ul>
+            </nav>
+	    </div>
+    </header>
+
+    <div id="container">
+		<div id="main">
+            @RenderBody()
+		</div>
+    </div>
+
+    <footer>
+	    <div class="shell">
+		    <span class="right">
+			    Design by <a href="http://chocotemplates.com" target="_blank" title="The Sweetest CSS Templates WorldWide">Chocotemplates.com</a>
+		    </span>
+	    </div>
+    </footer>	
+
+    @Scripts.Render("~/bundles/playbook")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

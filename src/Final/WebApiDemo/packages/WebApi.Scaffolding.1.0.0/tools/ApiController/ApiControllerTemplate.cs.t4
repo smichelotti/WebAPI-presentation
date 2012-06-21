@@ -1,0 +1,47 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web;
+using System.Web.Http;
+using <#= Model.Namespace #>.Models;
+
+namespace <#= Model.ApiControllerName #>
+{
+	public class <#= Model.Namespace #> : ApiController 
+	{
+		public IEnumerable<<#= Model.ModelType #>> GetAll()
+		{
+			throw new NotImplementedException();
+		}
+
+		public <#= Model.ModelType #> Get(int id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public HttpResponseMessage Post(<#= Model.ModelType #> item)
+		{
+			throw new NotImplementedException();
+		}
+
+		public HttpResponseMessage Put(int id, <#= Model.ModelType #> item)
+		{
+			throw new NotImplementedException();
+		}
+
+		public HttpResponseMessage Delete(int id)
+		{
+			throw new NotImplementedException();
+		}
+	}
+}

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>wapi12-getunittest</Title>
+      <Author>setup</Author>
+      <Description>
+      </Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>wapi12-getunittest</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp"><![CDATA[using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Ninject;
+using WebApiDemo;
+using WebApiDemo.Controllers;
+using WebApiDemo.Models;
+
+namespace WebApiDemo.Tests
+{
+    [TestClass]
+    public class TagsControllerTests
+    {
+        [TestMethod]
+        public void Get_all_should_return_tags_list()
+        {
+            // arrange
+            var tagsRepository = new Mock<ITagRepository>();
+            var tagsList = TestUtil.CreateTagsList();
+            tagsRepository.Setup(c => c.GetAll()).Returns(tagsList);
+
+            // act
+            var controller = new TagsController(tagsRepository.Object);
+            var result = controller.GetAll();
+
+            // assert
+            result.Count().Should().Be(8);
+            result.First().Name.Should().Be("Ball Handling");
+            tagsRepository.VerifyAll();
+        }
+    }
+}
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

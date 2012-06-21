@@ -1,0 +1,118 @@
+﻿@{
+    Layout = "~/Views/Shared/_PlaybookLayout.cshtml";
+}
+
+<div id="tagsList" class="box">
+    <div class="box-head">
+        <h2 class="left">Tags</h2>
+    </div>
+    <div class="box-content">
+        <input type="text" placeholder="Add New Tag" data-bind="value: tagToAdd, valueUpdate: 'afterkeydown', executeOnEnter: addTag" />
+        <button data-bind="click: addTag, enable: tagToAdd().length > 0">+ Add</button>
+        <ul data-bind="foreach: tags">
+            <li class="tagItem" data-bind="click: $parent.selectTag">
+                <span data-bind="text: Name"></span>
+                <div>
+                    <a href="#" class="tag-edit">Edit</a>
+                    <a href="#" class="tag-delete">Delete</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="tagDialog" data-bind="with: selectedTag">
+    Tag Name:
+    <input type="text" data-bind="value: Name" />
+</div>
+
+
+<div id="drillsList" class="box">
+    <div class="box-head">
+        <h2 class="left">
+            <span data-bind="text: selectedTag().Name() + ' Drills'"></span>
+        </h2>
+    </div>
+    <div class="box-content">
+        <input id="newDrill" type="text" placeholder="Add New Drill" data-bind="value: drillToAdd, valueUpdate: 'afterkeydown', executeOnEnter: addDrill" />
+        <button data-bind="click: addDrill, enable: drillToAdd().length > 0">
+            + Add</button>
+        <ul data-bind="foreach: currentTagDrills">
+            <li data-bind="click: $parent.drillClick, css: {activeDrill: $parent.clickedDrill() === $data }, event: { mouseover: $parent.drillMouseOver, mouseout: $parent.drillMouseOut }">
+                <span data-bind="text: Name"></span>
+                <div>
+                    <a href="#" class="drill-delete">Delete</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="drillDetail" class="box" data-bind="with: selectedDrill">
+    <div class="box-head">
+        <h2 class="left">
+            <span data-bind="text: 'Drill: ' + Name()"></span>
+        </h2>
+        <div class="right">
+            <button data-bind="click: $parent.editDrill">
+                Edit</button>
+        </div>
+    </div>
+    <div class="box-content">
+        <div class="editor-label">
+            <label for="drillName">
+                Name:</label>
+        </div>
+        <div class="editor-field">
+            <!-- ko if: $parent.useDrillEditTemplate -->
+            <input type="text" data-bind="value: Name" />
+            <!-- /ko -->
+            <!-- ko ifnot: $parent.useDrillEditTemplate -->
+            <span data-bind="text: Name"></span>
+            <!-- /ko -->
+        </div>
+        <div class="editor-label">
+            <label for="drillName">
+                Description:</label>
+        </div>
+        <div class="editor-field">
+            <!-- ko if: $parent.useDrillEditTemplate -->
+            <input type="text" data-bind="value: Description" />
+            <!-- /ko -->
+            <!-- ko ifnot: $parent.useDrillEditTemplate -->
+            <span data-bind="text: Description"></span>
+            <!-- /ko -->
+        </div>
+        <div class="editor-label">
+            <label for="drillName">
+                Link:</label>
+        </div>
+        <div class="editor-field">
+            <!-- ko if: $parent.useDrillEditTemplate -->
+            <input type="text" data-bind="value: Url" />
+            <!-- /ko -->
+            <!-- ko ifnot: $parent.useDrillEditTemplate -->
+            <a data-bind="visible: Url, text: Name, attr: { href: Url }" target="_blank"></a>
+            <span data-bind="visible: !Url()">(None)</span>
+            <!-- /ko -->
+        </div>
+        <div class="editor-label">
+            <label for="drillName">
+                Tag:</label>
+        </div>
+        <div class="editor-field">
+            <!-- ko if: $parent.useDrillEditTemplate -->
+            <select data-bind="options: $parent.tags, optionsText: 'Name', optionsValue: 'Id', value: TagId">
+            </select>
+            <!-- /ko -->
+            <!-- ko ifnot: $parent.useDrillEditTemplate -->
+            <span data-bind="text: $parent.tagNameFor(TagId())"></span>
+            <!-- /ko -->
+        </div>
+        <!-- ko if: $parent.useDrillEditTemplate -->
+        <button data-bind="click: $parent.saveDrill">
+            Save</button>
+        <button data-bind="click: $parent.cancelDrillEdit">
+            Cancel</button>
+        <!-- /ko -->
+    </div>
+</div>
